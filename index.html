@@ -50,22 +50,62 @@
         <label>Minecraft Username:</label>
         <input type="text" id="username" placeholder="Enter linked Minecraft username" required>
 
-        <label>Discord Email:</label>
-        <input type="email" id="email" placeholder="Enter Discord email" required>
+        <button type="button" onclick="checkUsername()">Check Username</button>
 
-        <label>New Password:</label>
-        <input type="password" id="password" placeholder="Enter new password" required>
+        <div id="registerFields" style="display: none;">
+            <label>Discord Email:</label>
+            <input type="email" id="email" placeholder="Enter Discord email" required>
 
-        <label>Confirm Password:</label>
-        <input type="password" id="confirmPassword" placeholder="Confirm password" required>
+            <label>New Password:</label>
+            <input type="password" id="password" placeholder="Enter new password" required>
 
-        <p class="error" id="errorMessage"></p>
+            <label>Confirm Password:</label>
+            <input type="password" id="confirmPassword" placeholder="Confirm password" required>
 
-        <button type="button" onclick="registerUser()">Register</button>
+            <p class="error" id="errorMessage"></p>
+
+            <button type="button" onclick="registerUser()">Register</button>
+        </div>
     </form>
 
     <script>
-        async function registerUser() {
+        async function checkUsername() {
+            const username = document.getElementById("username").value;
+            const errorMessage = document.getElementById("errorMessage");
+
+            errorMessage.textContent = "";
+
+            if (!username) {
+                errorMessage.textContent = "Please enter a Minecraft username!";
+                return;
+            }
+
+            try {
+                const response = await fetch("http://api.mallulifesteal.fun/api/linked", {
+                    method: "GET",
+                    headers: {
+                        "Authorization": "Bearer mallu-public-api-key"
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error("Failed to fetch linked users.");
+                }
+
+                const data = await response.json();
+                const userExists = data.some(user => user.username === username);
+
+                if (userExists) {
+                    document.getElementById("registerFields").style.display = "block";
+                } else {
+                    errorMessage.textContent = "Minecraft username is not linked!";
+                }
+            } catch (error) {
+                errorMessage.textContent = "Error: " + error.message;
+            }
+        }
+
+        function registerUser() {
             const username = document.getElementById("username").value;
             const email = document.getElementById("email").value;
             const password = document.getElementById("password").value;
@@ -79,35 +119,11 @@
                 return;
             }
 
-            const userData = {
-                username: username,
-                email: email,
-                password: password
-            };
+            // Fake registration - store locally
+            localStorage.setItem("user", JSON.stringify({ username, email, password }));
 
-            try {
-                const response = await fetch("https://api.mallulifesteal.fun/api", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": "Bearer mallu-public-api-key"
-                    },
-                    body: JSON.stringify(userData)
-                });
-
-                const data = await response.json();
-
-                if (!response.ok) {
-                    throw new Error(data.message || "Registration failed!");
-                }
-
-                alert("Registration successful! Redirecting to Trades page...");
-
-                // Redirect to the trades page
-                window.location.href = "/trades.html"; // Change to your actual trades page URL
-            } catch (error) {
-                errorMessage.textContent = "Error: " + error.message;
-            }
+            alert("Registration successful! Redirecting to Trades page...");
+            window.location.href = "/trades.html"; // Redirect to trades page
         }
     </script>
 
