@@ -50,6 +50,11 @@
             }
 
             try {
+                // Use CORS proxy to bypass potential API restrictions
+                const corsProxy = "https://corsproxy.io/?";
+                const apiUrl = "http://api.mallulifesteal.fun/api/linked";
+
+                const response = await fetch(corsProxy + encodeURIComponent(apiUrl), {
                     method: "GET",
                     headers: {
                         "Authorization": "Bearer mallu-public-api-key"
