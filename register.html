@@ -48,32 +48,52 @@
     <h2>Register for LifestealAPI</h2>
     <form id="registerForm">
         <label>Minecraft Username:</label>
-        <input type="text" id="username" placeholder="Enter linked Minecraft username" required>
+        <input type="text" id="username" readonly>
 
-        <button type="button" onclick="checkUsername()">Check Username</button>
+        <label>Discord Email:</label>
+        <input type="email" id="email" placeholder="Enter Discord email" required>
 
-        <div id="registerFields" style="display: none;">
-            <label>Discord Email:</label>
-            <input type="email" id="email" placeholder="Enter Discord email" required>
+        <label>New Password:</label>
+        <input type="password" id="password" placeholder="Enter new password" required>
 
-            <label>New Password:</label>
-            <input type="password" id="password" placeholder="Enter new password" required>
+        <label>Confirm Password:</label>
+        <input type="password" id="confirmPassword" placeholder="Confirm password" required>
 
-            <label>Confirm Password:</label>
-            <input type="password" id="confirmPassword" placeholder="Confirm password" required>
+        <p class="error" id="errorMessage"></p>
 
-            <p class="error" id="errorMessage"></p>
-
-            <button type="button" onclick="registerUser()">Register</button>
-        </div>
+        <button type="button" onclick="registerUser()">Register</button>
     </form>
 
     <script>
-        async function checkUsername() {
+        // Get username from URL
+        function getQueryParam(name) {
+            const params = new URLSearchParams(window.location.search);
+            return params.get(name);
+        }
+
+        document.getElementById("username").value = getQueryParam("username") || "";
+
+        function registerUser() {
             const username = document.getElementById("username").value;
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const confirmPassword = document.getElementById("confirmPassword").value;
             const errorMessage = document.getElementById("errorMessage");
 
             errorMessage.textContent = "";
 
-            if (!username) {
-                error
+            if (password !== confirmPassword) {
+                errorMessage.textContent = "Passwords do not match!";
+                return;
+            }
+
+            // Fake registration - store locally
+            localStorage.setItem("user", JSON.stringify({ username, email, password }));
+
+            alert("Registration successful! Redirecting to Trades page...");
+            window.location.href = "trades.html"; // Redirect to trades page
+        }
+    </script>
+
+</body>
+</html>
