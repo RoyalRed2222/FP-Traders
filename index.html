@@ -58,20 +58,23 @@
                 });
 
                 if (!response.ok) {
-                    throw new Error("Failed to fetch linked users.");
+                    throw new Error(`Server error: ${response.status} ${response.statusText}`);
                 }
 
                 const data = await response.json();
+
+                console.log("API Response:", data);  // Debugging: Check API response in browser console
+
                 const userExists = data.some(user => user.username === username);
 
                 if (userExists) {
-                    // Redirect to register page with username as a URL parameter
                     window.location.href = `register.html?username=${encodeURIComponent(username)}`;
                 } else {
                     errorMessage.textContent = "Minecraft username is not linked!";
                 }
             } catch (error) {
                 errorMessage.textContent = "Error: " + error.message;
+                console.error("Fetch error:", error);  // Debugging: Show error in console
             }
         }
     </script>
