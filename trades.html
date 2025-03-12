@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trades Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        table {
+            width: 80%;
+            margin: auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        button {
+            padding: 8px 12px;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+        }
+        .order-btn {
+            background-color: #28a745;
+            color: white;
+        }
+        .order-btn:hover {
+            background-color: #218838;
+        }
+        .cancel-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+        .cancel-btn:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Trade Items</h1>
+    <table>
+        <tr>
+            <th>Item</th>
+            <th>Price (Ingots)</th>
+            <th>Action</th>
+        </tr>
+        <tbody id="tradeTable"></tbody>
+    </table>
+
+    <script>
+        const trades = [
+            { item: "(NETH) GOD ARM", price: "5 Ingots" },
+            { item: "(NETH) PICK (Silk & Fortune)", price: "3 Ingots" },
+            { item: "GOLDEN APPLE (2 STACK)", price: "3 Ingots" },
+            { item: "TEAR (3 STACKS)", price: "1 Ingot" },
+            { item: "ENDER PEARL (2 STACK - 128)", price: "1 Ingot" },
+            { item: "XP BOTTLE (3 STACK)", price: "1 Ingot" },
+            { item: "GLOWSTONE (2 STACK)", price: "1 Ingot" },
+            { item: "OBSIDIAN (2 STACK)", price: "1 Ingot" },
+            { item: "GOLD BLOCK (1 STACK)", price: "2 Ingots" },
+            { item: "IRON BLOCK (1 STACK)", price: "1 Ingot" },
+            { item: "CRYSTALS (1 STACK)", price: "2 Ingots" },
+            { item: "EMERALD BLOCK (1 STACK)", price: "2 Ingots" },
+            { item: "NETHER STAR (1)", price: "1 Ingot" },
+            { item: "GOD ARMOR (Diamond)", price: "3 Ingots" },
+            { item: "GOD SWORD (Diamond)", price: "2 Ingots" },
+            { item: "PICK (Silk or Fortune) (Diamond)", price: "2 Ingots" },
+            { item: "XP BOTTLE (3 STACK)", price: "1 Ingot" },
+            { item: "GOLDEN APPLE (1 STACK)", price: "2 Ingots" },
+            { item: "GOLDEN CARROT (3 STACK)", price: "1 Ingot" },
+            { item: "RESPAWN ANCHOR (1 STACK)", price: "7 Ingots" }
+        ];
+
+        const tradeTable = document.getElementById("tradeTable");
+
+        trades.forEach(trade => {
+            const row = document.createElement("tr");
+
+            row.innerHTML = `
+                <td>${trade.item}</td>
+                <td>${trade.price}</td>
+                <td>
+                    <button class="order-btn" onclick="placeOrder('${trade.item}', '${trade.price}')">Order</button>
+                    <button class="cancel-btn" onclick="cancelOrder('${trade.item}')">Cancel</button>
+                </td>
+            `;
+
+            tradeTable.appendChild(row);
+        });
+
+        function placeOrder(item, price) {
+            const email = "fpontopbyroyal@gmail.com";
+            const subject = encodeURIComponent("New Trade Order");
+            const body = encodeURIComponent(`A new order has been placed:\n\nItem: ${item}\nPrice: ${price}\n\nPlease process the order.`);
+            
+            window.open(`mailto:${email}?subject=${subject}&body=${body}`, "_blank");
+            alert(`Order placed for ${item} at ${price}.`);
+        }
+
+        function cancelOrder(item) {
+            alert(`Order for ${item} has been cancelled.`);
+        }
+    </script>
+
+</body>
+</html>
