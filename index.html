@@ -50,12 +50,8 @@
             }
 
             try {
-                // Use CORS proxy to bypass potential API restrictions
-                const corsProxy = "https://api.allorigins.win/get?url=
-https://thingproxy.freeboard.io/fetch/";
-                const apiUrl = "http://api.mallulifesteal.fun/api/linked";
-
-                const response = await fetch(corsProxy + encodeURIComponent(apiUrl), {
+                // Fetch the linked usernames from the API
+                const response = await fetch("http://api.mallulifesteal.fun/api/linked", {
                     method: "GET",
                     headers: {
                         "Authorization": "Bearer mallu-public-api-key"
