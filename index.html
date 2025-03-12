@@ -37,6 +37,7 @@
     <button onclick="checkUsername()">Check Username</button>
     <p class="error" id="errorMessage"></p>
 
+    <!-- Paste the script here, before </body> -->
     <script>
         async function checkUsername() {
             const username = document.getElementById("username").value;
@@ -50,7 +51,8 @@
             }
 
             try {
-                // Fetch the linked usernames from the API
+                console.log("Checking username:", username); // Debugging
+
                 const response = await fetch("http://api.mallulifesteal.fun/api/linked", {
                     method: "GET",
                     headers: {
@@ -64,18 +66,21 @@
 
                 const data = await response.json();
 
-                console.log("API Response:", data);  // Debugging: Check API response in browser console
+                console.log("API Response:", data);  // Debugging: Show full API response
 
-                const userExists = data.some(user => user.username === username);
+                const userExists = data.some(user => user.username.toLowerCase() === username.toLowerCase());
+
+                console.log("User exists:", userExists);  // Debugging: Check if username was found
 
                 if (userExists) {
+                    console.log("Redirecting to register.html...");
                     window.location.href = `register.html?username=${encodeURIComponent(username)}`;
                 } else {
                     errorMessage.textContent = "Minecraft username is not linked!";
                 }
             } catch (error) {
                 errorMessage.textContent = "Error: " + error.message;
-                console.error("Fetch error:", error);  // Debugging: Show error in console
+                console.error("Fetch error:", error);
             }
         }
     </script>
