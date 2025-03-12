@@ -101,7 +101,10 @@
                     throw new Error(data.message || "Registration failed!");
                 }
 
-                alert("Registration successful! You can now log in.");
+                alert("Registration successful! Redirecting to Trades page...");
+
+                // Redirect to the trades page
+                window.location.href = "/trades.html"; // Change to your actual trades page URL
             } catch (error) {
                 errorMessage.textContent = "Error: " + error.message;
             }
